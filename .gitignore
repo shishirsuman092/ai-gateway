@@ -41,3 +41,6 @@ local.properties
 .DS_Store
 Thumbs.db
 uv.lock
+
+# Claude Code local settings
+.claude/settings.local.json
