@@ -1,0 +1,7 @@
+# TLS terminated here (automatic Let's Encrypt certificate for PUBLIC_HOST).
+{$PUBLIC_HOST} {
+    encode zstd gzip
+    reverse_proxy gateway:8000 {
+        header_up X-Forwarded-Proto {scheme}
+    }
+}

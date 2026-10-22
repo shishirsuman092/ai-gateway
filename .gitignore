@@ -1,0 +1,43 @@
+.venv/
+venv/
+env/
+data/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Build output
+dist/
+build/
+
+# Node
+node_modules/
+
+# Java / IDE local config
+*.properties
+!gradle.properties
+local.properties
+*.class
+*.jar
+.idea/
+.vscode/
+*.iml
+
+# Logs and temp
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+uv.lock

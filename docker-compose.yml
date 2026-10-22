@@ -1,0 +1,42 @@
+# Production-style stack: Caddy terminates HTTPS, the gateway listens on the internal network only.
+# Secrets come from .env (never committed). Set PUBLIC_BASE_URL=https://$PUBLIC_HOST in .env.
+services:
+  gateway:
+    build: .
+    env_file: .env
+    environment:
+      APP_ENV: production
+      DB_PATH: /data/gateway.db
+      TRUSTED_PROXY_IPS: "*"   # only the caddy container can reach this port
+    expose:
+      - "8000"
+    volumes:
+      - gateway-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  caddy:
+    image: caddy:2
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?set PUBLIC_HOST in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - gateway
+    restart: unless-stopped
+
+volumes:
+  gateway-data:
+  caddy-data:
+  caddy-config:
